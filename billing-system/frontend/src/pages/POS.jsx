@@ -40,9 +40,17 @@ export default function POS() {
         setCart(prev => {
             const existing = prev.find(item => item.id === product.id);
             if (existing) {
+                if (existing.quantity >= product.stock) {
+                    alert(`Cannot add more. Only ${product.stock} items in stock.`);
+                    return prev;
+                }
                 return prev.map(item =>
                     item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
                 );
+            }
+            if (product.stock < 1) {
+                alert(`Cannot add. Product "${product.name}" is out of stock.`);
+                return prev;
             }
             return [...prev, { ...product, quantity: 1 }];
         });
@@ -51,7 +59,10 @@ export default function POS() {
     const updateQuantity = (id, delta) => {
         setCart(prev => prev.map(item => {
             if (item.id === id) {
-                const newQ = item.quantity + delta;
+                if (newQ > item.stock) {
+                    alert(`Cannot exceed available stock of ${item.stock}`);
+                    return item;
+                }
                 return newQ > 0 ? { ...item, quantity: newQ } : item;
             }
             return item;
@@ -100,7 +111,7 @@ export default function POS() {
             setDiscountType('NONE');
             setDiscountValue(0);
         } catch (err) {
-            alert("Checkout failed: " + err.message);
+            alert(err.message);
         }
     };
 

@@ -28,6 +28,7 @@ public class ProductService {
                 .barcode(barcode)
                 .name(dto.getName())
                 .price(dto.getPrice())
+                .stock(dto.getStock() != null ? dto.getStock() : 0)
                 .build();
 
         product = productRepository.save(product);
@@ -52,6 +53,9 @@ public class ProductService {
                 .orElseThrow(() -> new RuntimeException("Product not found"));
         product.setName(dto.getName());
         product.setPrice(dto.getPrice());
+        if (dto.getStock() != null) {
+            product.setStock(dto.getStock());
+        }
         product = productRepository.save(product);
         return mapToDTO(product);
     }
@@ -66,6 +70,7 @@ public class ProductService {
         dto.setBarcode(product.getBarcode());
         dto.setName(product.getName());
         dto.setPrice(product.getPrice());
+        dto.setStock(product.getStock());
         return dto;
     }
 }

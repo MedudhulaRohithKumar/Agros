@@ -10,7 +10,7 @@ export default function Products() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [editingProduct, setEditingProduct] = useState(null);
 
-    const [formData, setFormData] = useState({ name: '', price: '', barcode: '' });
+    const [formData, setFormData] = useState({ name: '', price: '', barcode: '', stock: '' });
 
     const loadProducts = async () => {
         try {
@@ -33,13 +33,15 @@ export default function Products() {
             if (editingProduct) {
                 await api.products.update(editingProduct.id, {
                     name: formData.name,
-                    price: parseFloat(formData.price)
+                    price: parseFloat(formData.price),
+                    stock: parseInt(formData.stock) || 0
                 });
             } else {
                 await api.products.create({
                     name: formData.name,
                     price: parseFloat(formData.price),
-                    barcode: formData.barcode || null
+                    barcode: formData.barcode || null,
+                    stock: parseInt(formData.stock) || 0
                 });
             }
             setIsModalOpen(false);
@@ -51,13 +53,13 @@ export default function Products() {
 
     const openAddModal = () => {
         setEditingProduct(null);
-        setFormData({ name: '', price: '', barcode: '' });
+        setFormData({ name: '', price: '', barcode: '', stock: '' });
         setIsModalOpen(true);
     };
 
     const openEditModal = (product) => {
         setEditingProduct(product);
-        setFormData({ name: product.name, price: product.price, barcode: product.barcode });
+        setFormData({ name: product.name, price: product.price, barcode: product.barcode, stock: product.stock });
         setIsModalOpen(true);
     };
 
@@ -102,6 +104,7 @@ export default function Products() {
                             <tr className="border-b border-slate-200 text-sm text-slate-500">
                                 <th className="pb-3 font-medium px-4">Name</th>
                                 <th className="pb-3 font-medium px-4">Price</th>
+                                <th className="pb-3 font-medium px-4">Stock</th>
                                 <th className="pb-3 font-medium px-4">Barcode</th>
                                 <th className="pb-3 font-medium px-4 w-20">Actions</th>
                             </tr>
@@ -113,6 +116,11 @@ export default function Products() {
                                 <tr key={product.id} className="hover:bg-slate-50">
                                     <td className="py-4 px-4 font-medium text-slate-900">{product.name}</td>
                                     <td className="py-4 px-4 text-slate-600">₹{product.price.toFixed(2)}</td>
+                                    <td className="py-4 px-4">
+                                        <span className={`px-2.5 py-1 rounded-full text-xs font-semibold ${product.stock > 10 ? 'bg-emerald-100 text-emerald-700' : product.stock > 0 ? 'bg-amber-100 text-amber-700' : 'bg-red-100 text-red-700'}`}>
+                                            {product.stock} in stock
+                                        </span>
+                                    </td>
                                     <td className="py-4 px-4">
                                         <Barcode value={product.barcode} width={1.2} height={40} fontSize={12} margin={0} />
                                     </td>
@@ -163,6 +171,18 @@ export default function Products() {
                                         step="0.01"
                                         value={formData.price}
                                         onChange={e => setFormData({ ...formData, price: e.target.value })}
+                                        className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-sm font-medium text-slate-700 mb-1">Stock Quantity</label>
+                                    <input
+                                        required
+                                        type="number"
+                                        min="0"
+                                        step="1"
+                                        value={formData.stock}
+                                        onChange={e => setFormData({ ...formData, stock: e.target.value })}
                                         className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
                                     />
                                 </div>

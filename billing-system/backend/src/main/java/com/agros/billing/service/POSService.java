@@ -3,6 +3,8 @@ package com.agros.billing.service;
 import com.agros.billing.dto.OrderRequestDTO;
 import com.agros.billing.dto.OrderResponseDTO;
 import com.agros.billing.entity.*;
+import com.agros.billing.exception.InsufficientStockException;
+import com.agros.billing.exception.ResourceNotFoundException;
 import com.agros.billing.repository.CustomerRepository;
 import com.agros.billing.repository.ProductRepository;
 import com.agros.billing.repository.SaleOrderRepository;
@@ -49,8 +51,16 @@ public class POSService {
         // 3. Process Items
         for (var itemReq : request.getItems()) {
             Product product = productRepository.findByBarcode(itemReq.getBarcode())
-                    .orElseThrow(() -> new RuntimeException("Product not found with barcode: " + itemReq.getBarcode()));
+                    .orElseThrow(() -> new ResourceNotFoundException("Product not found with barcode: " + itemReq.getBarcode()));
             
+            if (product.getStock() < itemReq.getQuantity()) {
+                throw new InsufficientStockException("Insufficient stock for product: " + product.getName() + ". Available: " + product.getStock() + ", Requested: " + itemReq.getQuantity());
+            }
+
+            // Deduct stock
+            product.setStock(product.getStock() - itemReq.getQuantity());
+            productRepository.save(product);
+
             BigDecimal subTotal = product.getPrice().multiply(new BigDecimal(itemReq.getQuantity()));
             totalAmount = totalAmount.add(subTotal);
 
