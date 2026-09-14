@@ -1,0 +1,50 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Agros Billing System - AWS Lambda Deployment (Python 3.14)
+
+Globals:
+  Function:
+    Timeout: 30
+    MemorySize: 512
+    Environment:
+      Variables:
+        DATABASE_URL: !Ref DatabaseUrl
+        JWT_SECRET_KEY: !Ref JwtSecretKey
+
+Parameters:
+  DatabaseUrl:
+    Type: String
+    Default: "sqlite:////tmp/agros_billing.db"
+    Description: Database connection string (e.g. postgresql://user:pass@rds-host:5432/agros)
+  JwtSecretKey:
+    Type: String
+    Default: "agros-billing-lambda-secret-key-prod-2026"
+    NoEcho: true
+    Description: Secret key for signing JWT tokens
+
+Resources:
+  AgrosBillingFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      PackageType: Zip
+      CodeUri: .
+      Handler: lambda_handler.handler
+      Runtime: python3.14
+      Architectures:
+        - arm64
+      Events:
+        ApiEvent:
+          Type: HttpApi
+          Properties:
+            Path: /{proxy+}
+            Method: ANY
+        RootEvent:
+          Type: HttpApi
+          Properties:
+            Path: /
+            Method: ANY
+
+Outputs:
+  AgrosApiUrl:
+    Description: HTTP API endpoint URL for Agros Billing Backend
+    Value: !Sub "https://${ServerlessHttpApi}.execute-api.${AWS::Region}.amazonaws.com"

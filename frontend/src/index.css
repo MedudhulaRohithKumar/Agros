@@ -1,0 +1,257 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --font-heading: 'Outfit', sans-serif;
+    --font-body: 'Plus Jakarta Sans', sans-serif;
+  }
+
+  body {
+    font-family: var(--font-body);
+    background-color: #F0F4F8;
+    color: #1E293B;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+  }
+}
+
+/* -------------------------------------------------------------
+   CLAYMORPHISM CORE DESIGN TOKENS
+   Tactile 3D soft clay depths, multi-layer shadows, pillowy squircles
+------------------------------------------------------------- */
+
+/* Standard Elevated Clay Card */
+.clay-card {
+  background: #FFFFFF;
+  border-radius: 28px;
+  box-shadow: 
+    10px 14px 28px rgba(164, 180, 203, 0.28),
+    -10px -10px 24px rgba(255, 255, 255, 0.95),
+    inset 2px 2px 4px rgba(255, 255, 255, 0.9),
+    inset -2px -2px 6px rgba(164, 180, 203, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.clay-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 
+    12px 18px 32px rgba(164, 180, 203, 0.35),
+    -10px -10px 24px rgba(255, 255, 255, 0.98),
+    inset 2px 2px 4px rgba(255, 255, 255, 0.9),
+    inset -2px -2px 6px rgba(164, 180, 203, 0.06);
+}
+
+/* Flat / Subtle Clay Panel (e.g. inner wrappers, sidebars) */
+.clay-card-flat {
+  background: #F8FAFC;
+  border-radius: 24px;
+  box-shadow: 
+    6px 8px 18px rgba(164, 180, 203, 0.18),
+    -6px -6px 16px rgba(255, 255, 255, 0.9),
+    inset 1px 1px 3px rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+}
+
+/* Debossed / Pressed-in Clay Input Well */
+.clay-input {
+  background: #F1F5F9;
+  border-radius: 18px;
+  box-shadow: 
+    inset 3px 3px 6px rgba(160, 175, 200, 0.3),
+    inset -3px -3px 6px rgba(255, 255, 255, 0.95);
+  border: 2px solid transparent;
+  transition: all 0.2s ease;
+  font-family: var(--font-body);
+}
+
+.clay-input:focus {
+  outline: none;
+  border-color: #10B981;
+  background: #FFFFFF;
+  box-shadow: 
+    0 0 0 4px rgba(16, 185, 129, 0.15),
+    inset 2px 2px 4px rgba(160, 175, 200, 0.15);
+}
+
+/* Tactile Primary Clay Button (Emerald / Lime pop) */
+.clay-btn-primary {
+  background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+  color: #FFFFFF;
+  border-radius: 20px;
+  box-shadow: 
+    6px 8px 18px rgba(16, 185, 129, 0.38),
+    -4px -4px 12px rgba(255, 255, 255, 0.8),
+    inset 2px 2px 4px rgba(255, 255, 255, 0.4),
+    inset -2px -2px 4px rgba(0, 0, 0, 0.15);
+  font-weight: 700;
+  transition: all 0.18s cubic-bezier(0.34, 1.56, 0.64, 1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.clay-btn-primary:hover:not(:disabled) {
+  transform: translateY(-2px) scale(1.01);
+  box-shadow: 
+    8px 12px 22px rgba(16, 185, 129, 0.45),
+    -4px -4px 12px rgba(255, 255, 255, 0.8),
+    inset 2px 2px 4px rgba(255, 255, 255, 0.45);
+}
+
+.clay-btn-primary:active:not(:disabled) {
+  transform: scale(0.96);
+  box-shadow: 
+    2px 3px 8px rgba(16, 185, 129, 0.3),
+    inset 3px 3px 6px rgba(0, 0, 0, 0.25);
+}
+
+/* Secondary Neutral Clay Button */
+.clay-btn-secondary {
+  background: #FFFFFF;
+  color: #334155;
+  border-radius: 20px;
+  box-shadow: 
+    6px 8px 16px rgba(164, 180, 203, 0.25),
+    -6px -6px 14px rgba(255, 255, 255, 0.95),
+    inset 2px 2px 4px rgba(255, 255, 255, 0.9),
+    inset -2px -2px 4px rgba(164, 180, 203, 0.08);
+  font-weight: 600;
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  transition: all 0.18s cubic-bezier(0.34, 1.56, 0.64, 1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.clay-btn-secondary:hover:not(:disabled) {
+  transform: translateY(-2px);
+  color: #0F172A;
+  box-shadow: 
+    8px 12px 20px rgba(164, 180, 203, 0.32),
+    -6px -6px 14px rgba(255, 255, 255, 1);
+}
+
+.clay-btn-secondary:active:not(:disabled) {
+  transform: scale(0.96);
+  box-shadow: 
+    inset 3px 3px 6px rgba(160, 175, 200, 0.25),
+    inset -2px -2px 4px rgba(255, 255, 255, 0.8);
+}
+
+/* Purple / Violet Clay Accent (Gen-Z vibe) */
+.clay-btn-purple {
+  background: linear-gradient(135deg, #8B5CF6 0%, #6D28D9 100%);
+  color: #FFFFFF;
+  border-radius: 20px;
+  box-shadow: 
+    6px 8px 18px rgba(139, 92, 246, 0.38),
+    -4px -4px 12px rgba(255, 255, 255, 0.8),
+    inset 2px 2px 4px rgba(255, 255, 255, 0.4),
+    inset -2px -2px 4px rgba(0, 0, 0, 0.15);
+  font-weight: 700;
+  transition: all 0.18s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.clay-btn-purple:active:not(:disabled) {
+  transform: scale(0.96);
+}
+
+/* Danger Clay Button (Coral/Red) */
+.clay-btn-danger {
+  background: linear-gradient(135deg, #F43F5E 0%, #E11D48 100%);
+  color: white;
+  border-radius: 16px;
+  box-shadow: 
+    5px 6px 14px rgba(244, 63, 94, 0.35),
+    inset 2px 2px 3px rgba(255, 255, 255, 0.4);
+  transition: all 0.18s ease;
+}
+
+.clay-btn-danger:active {
+  transform: scale(0.95);
+}
+
+/* Clay Badge / Pill */
+.clay-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 14px;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.025em;
+  box-shadow: 
+    3px 4px 8px rgba(164, 180, 203, 0.22),
+    -2px -2px 6px rgba(255, 255, 255, 0.8),
+    inset 1px 1px 2px rgba(255, 255, 255, 0.6);
+}
+
+/* Clay Floating Bottom Nav (for Mobile) */
+.clay-mobile-nav {
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-top-left-radius: 28px;
+  border-top-right-radius: 28px;
+  box-shadow: 
+    0 -8px 24px rgba(164, 180, 203, 0.25),
+    inset 0 1px 2px rgba(255, 255, 255, 0.9);
+  border-top: 1px solid rgba(255, 255, 255, 0.8);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #CBD5E1;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94A3B8;
+}
+
+/* Hide scrollbar for clean carousels */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* -------------------------------------------------------------
+   PRINT STYLES FOR CLEAN RECEIPT & PDF DOWNLOAD
+------------------------------------------------------------- */
+@page {
+  size: 80mm auto;
+  margin: 4mm;
+}
+
+@media print {
+  /* Hide navigation, sidebars, buttons, mobile nav, modals backdrops */
+  aside,
+  nav,
+  .clay-mobile-nav,
+  button,
+  .no-print {
+    display: none !important;
+  }
+
+  body {
+    background: #FFFFFF !important;
+    color: #000000 !important;
+  }
+}
+
